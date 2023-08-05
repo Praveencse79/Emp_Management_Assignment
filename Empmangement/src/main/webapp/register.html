@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Information Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        input[type="number"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .gender-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .gender-label {
+            margin-right: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .char-counter {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee Information</h1>
+    <form id="employeeForm" action="SaveServlet" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="birthdate">Birth Date:</label>
+        <input type="date" id="birthdate" name="birthdate" required>
+
+        <label for="address">Address (Max 150 characters):</label>
+        <textarea id="address" name="address" rows="4" cols="50" required maxlength="150"></textarea>
+
+        <div class="gender-section">
+            <span class="gender-label">Gender:</span>
+            <input type="radio" id="male" name="gender" value="1" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="2" required>
+            <label for="female">Female</label>
+        </div>
+
+        <label for="salary">Salary (Max 5 digits, Numbers only):</label>
+        <input type="text" id="salary" name="salary" oninput="limitAndValidateSalary()" required>
+        <div class="char-counter" id="charCounter">Characters left: 5</div>
+
+        <input type="submit" value="Submit">
+    </form>
+
+<br/>
+<a href="ViewServlet">view employees</a>
+     <script>
+        function limitAndValidateSalary() {
+            const salaryInput = document.getElementById("salary");
+            const charCounter = document.getElementById("charCounter");
+            const maxSalaryLength = 5;
+
+            // Remove non-numeric characters
+            salaryInput.value = salaryInput.value.replace(/\D/g, "");
+
+            // Limit the maximum length
+            if (salaryInput.value.length > maxSalaryLength) {
+                salaryInput.value = salaryInput.value.slice(0, maxSalaryLength);
+            }
+
+            // Update character counter
+            const remainingChars = maxSalaryLength - salaryInput.value.length;
+            charCounter.innerText = `Characters left: ${remainingChars}`;
+        }
+    </script> 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

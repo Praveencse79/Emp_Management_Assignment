@@ -1,0 +1,118 @@
+--SQL Query Assignment
+
+CREATE TABLE Student (
+    studentId INT PRIMARY KEY,
+    Name VARCHAR2(100) NOT NULL
+);
+
+desc student
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTID                                 NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(100)
+
+CREATE TABLE Mark (
+        StudentId INT,
+        English INT,
+        Maths INT,
+        Science INT,
+        CONSTRAINT pk_mark PRIMARY KEY (StudentId),
+        CONSTRAINT fk_mark_student FOREIGN KEY (StudentId) REFERENCES Student(StudentId)
+    );
+
+Table created.
+
+ desc mark
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTID                                 NOT NULL NUMBER(38)
+ ENGLISH                                            NUMBER(38)
+ MATHS                                              NUMBER(38)
+ SCIENCE                                            NUMBER(38)
+
+
+1. Display student names whose name start with ‘A’ or ‘a’
+Ans: select * from student where name like 'A%' OR name like 'a%';
+
+Output:
+STUDENTID NAME
+103	 Anjali
+107	 amit
+110	 anshu
+113	 Abhishek
+116	 Ankur
+118	 anita
+119	 Aman
+
+2. Display student name and their subject’s total (English+Maths+Science)
+Ans: SELECT s.NAME,(English + Maths + Science) AS total_marks FROM MARK m
+JOIN STUDENT s ON m.STUDENTID = s.STUDENTID;
+
+Output:
+  NAME TOTAL_MARKS
+Praveen   270
+Mitranjan 225
+Anjali	  142
+Priya	  194
+Pooja	  276
+Sonali	  170
+amit	  189
+Dipu	  188
+Deepak	  169
+anshu	  109
+raju	  147
+Rita	  111
+Abhishek  156
+Pintu	  176
+Shristi   179
+Ankur	  150
+Sanjeev	  188
+anita	  147
+Aman	  155
+Nishant	  139
+3. Display ranker name [Means display student name whose total is greater than all others student] 
+Ans: SELECT s.NAME,(English + Maths + Science) AS total_marks FROM MARK m
+JOIN STUDENT s ON m.STUDENTID = s.STUDENTID WHERE (English + Maths + Science)=(SELECT MAX(English + Maths + Science) from MARK);
+
+Output:
+NAME TOTAL_MARKS
+Pooja	276
+
+
+-- Employee Management(Employee Table)
+-- Step 1: Create a sequence for auto-incrementing employeeid
+CREATE SEQUENCE employee_seq
+  START WITH 1
+  INCREMENT BY 1
+  NOMAXVALUE
+  NOCYCLE;
+
+-- Step 2: Create the "employee" table
+create table employee (employeeid int primary key, name varchar2(100) not null, address varchar2(200) not null, gender int, salary numeric not null, birthdate date not null);
+
+-- Step 3: Create a trigger to insert auto-incremented employeeid values
+CREATE OR REPLACE TRIGGER employee_id_trigger
+BEFORE INSERT ON employee
+FOR EACH ROW
+BEGIN
+  SELECT employee_seq.NEXTVAL
+  INTO :new.employeeid
+  FROM dual;
+END;
+/  
+
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEEID                                NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(100)
+ ADDRESS                                   NOT NULL VARCHAR2(200)
+ GENDER                                             NUMBER(38)
+ SALARY                                    NOT NULL NUMBER(38)
+ BIRTHDATE                                 NOT NULL DATE
+
+
+
+
+
